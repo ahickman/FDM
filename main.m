@@ -1,13 +1,17 @@
 % Define Object
 in = [ ...
-  .4  0   0   .2; ...
-  -.2  0   0   .4; ...
+  .4    0   0   .2; ...
+  0   -.2   0   .1; ...
+  0    .2   0   .1; ...
+  -.2   0   0   .4; ...
 ];
 
-global CMAP = jet(size(in,1));
+global CMAP;
 global I;
 global COM;
-COM = computeCOM(in);
+global M;
+CMAP = jet(size(in,1));
+[COM M] = computeCOM(in);
 I = computeMOI(in);
 
 
@@ -24,8 +28,8 @@ roll = 0; % +CW
 alpha = 0; % +NOSEUP
 
 %Initial anglular rates (radians / second):
-phiDot = 15*pi/180; % Roll Rate (about z)
-thetaDot = 30*pi./180; % Pitch Rate (about y')
+phiDot = 5*pi/180; % Roll Rate (about z)
+thetaDot = 15*pi./180; % Pitch Rate (about y')
 psiDot = 0*pi./180; % Yaw Rate (about x'')
 
 % Angular Velocity Vector

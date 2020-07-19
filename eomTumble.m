@@ -6,7 +6,11 @@ v = x(4:6)';
 q = x(7:10)';
 w = x(11:13)'; % Roll, Pitch, Yaw (Angular Rates)
 
-mass = 1;
+
+global I;
+global M;
+global COM;
+mass = M;
 
 % Set up 3x3 Inertia Tensor
 
@@ -36,18 +40,13 @@ uDrag = -uv;
 uGrav = [0 0 1];
 F = [ 0 0 0 ];
 
-% Simple Sphere First
-I1 = 1;
-I2 = 1;
-I3 = 1;
-
 L_T = 0; % Total Torque vector in Body Frame about the X_B, Y_B, & Z_B axes
 M_T = 0;
 N_T = 0;
 
-wD(1) = (L_T - (I3-I2) * w(2)*w(3))/I1;
-wD(2) = (M_T - (I1-I3) * w(3)*w(1))/I2;
-wD(3) = (M_T - (I2-I1) * w(1)*w(2))/I3;
+wD(1) = (L_T - (I(3,3)-I(2,2)) * w(2)*w(3))/I(1,1);
+wD(2) = (M_T - (I(1,1)-I(3,3)) * w(3)*w(1))/I(2,2);
+wD(3) = (M_T - (I(2,2)-I(1,1)) * w(1)*w(2))/I(3,3);
 
 
 % Compute derivatives
