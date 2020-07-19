@@ -1,2 +1,2 @@
 # FDM
-Simple Flight Dynamics for MATLAB
+Simple Flight Dynamics for MATLAB / GNU Octave 
