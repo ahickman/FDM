@@ -4,8 +4,11 @@ v = x(4:6);
 q = x(7:10);
 
 vmag = norm(v);
-
-uv = v./ vmag;
+if vmag==0
+  uv = [ 1 0 0];
+ else
+  uv = v./ vmag;
+end
 zB = mul(mul(q, [0 0 0 1]), conjugate(q)); zB = zB(2:4); zB = zB ./norm(zB);
 yB = mul(mul(q, [0 0 1 0]), conjugate(q)); yB = yB(2:4); yB = yB ./norm(yB);
 xB = cross(yB, zB); xB = xB./norm(xB);

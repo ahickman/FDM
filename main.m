@@ -1,3 +1,16 @@
+% Define Object
+in = [ ...
+  .4  0   0   .2; ...
+  -.2  0   0   .4; ...
+];
+
+global CMAP = jet(size(in,1));
+global I;
+global COM;
+COM = computeCOM(in);
+I = computeMOI(in);
+
+
 r = [ 0 0 1 ]; % meters
 vmag = 2; % m/s
 
@@ -11,9 +24,9 @@ roll = 0; % +CW
 alpha = 0; % +NOSEUP
 
 %Initial anglular rates (radians / second):
-phiDot = 0*pi/180; % Roll Rate (about z)
-thetaDot = 0*pi./180; % Pitch Rate (about y')
-psiDot = 10*pi./180; % Yaw Rate (about x'')
+phiDot = 15*pi/180; % Roll Rate (about z)
+thetaDot = 30*pi./180; % Pitch Rate (about y')
+psiDot = 0*pi./180; % Yaw Rate (about x'')
 
 % Angular Velocity Vector
 w = [ phiDot thetaDot psiDot];
@@ -45,11 +58,38 @@ idx = find(x(:,3)<0);
 x(idx,:) = [];
 t(idx) = [];
 
+
 figure
 for ii = 1:10:length(x)
   [p, pTxt] = plotEntity(x(ii,:));
 end
-
 legend(p, pTxt);
 format_figure('Entity Over Time', 'X(inertial)', 'Y(inertial)', 'Z(inertial)')
 axis equal
+
+figure
+for ii = 1:10:length(x)
+  hold on
+  plotEntityDetails(x(ii,:), in);  
+end
+format_figure('EntityDetails Over Time', 'X(inertial)', 'Y(inertial)', 'Z(inertial)')
+axis equal
+
+if 0
+  figure
+  mVal = max(max(in(:,1:3)))
+  lim = [-mVal*1.1 mVal*1.1];
+  for ii = 1:2:length(x)
+    plotEntityDetails(x(ii,:), in);  
+    xlim(lim);
+    ylim(lim);
+    zlim(lim);
+    axis equal
+    format_figure('EntityDetails Over Time', 'X(inertial)', 'Y(inertial)', 'Z(inertial)')
+    pause(0.01);
+  end
+end
+
+
+
+
