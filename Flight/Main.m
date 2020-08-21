@@ -3,6 +3,9 @@ addpath(fullfile(pwd, "AeroModels"));
 addpath(fullfile(pwd, "Math"));
 addpath(fullfile(pwd, "Utilities"));
 
+%DefaultGeometry
+%aeroModel = @DefaultModel;
+
 DefaultGeometry
 aeroModel = @DefaultModel;
 
@@ -19,14 +22,14 @@ alt 		  = 10000;
 V 		    = 150;
 windB		  = [ 0 0 0 ];
 
-alpha 	  = 25;  % If Pitch==Alpha, initial velocity aligned with xI
+alpha 	  = 10;  % If Pitch==Alpha, initial velocity aligned with xI
 beta 		  = 0;
 yaw 		  = 0;
-pitch 	  = 25;
+pitch 	  = 10;
 roll 		  = 0;
 
 phiDot 	  = 0;
-thetaDot	= 0;
+thetaDot	= 10;
 psiDot 	  = 0; 
 
 %% Parameters derived form initial conditions
@@ -60,26 +63,36 @@ x(4:6) 	  = rI;
 x(7:9) 	  = wB;
 x(10:13) 	= qI;
 
-tFinal 	  = 10;
-nSteps 	  = tFinal*20;
-tspan 	  = 0:tFinal/nSteps:tFinal;
-[t, x] 	  = rungekutta(@EOM, aeroModel, tspan, x);
+%xDot = EOM(aeroModel, 0, x);
+%rIdot = xDot(4:6)
+%vBdot = xDot(1:3)
+%qIdot = xDot(10:13)
+%wBdot = xDot(7:9)
 
-idx = find(mod(t,1)==0);
+if 1
+  tFinal 	  = 30;
+  nSteps 	  = tFinal*20;
+  tspan 	  = 0:tFinal/nSteps:tFinal;
+  [t, x] 	  = rungekutta(@EOM, aeroModel, tspan, x);
+  
+  idx = find(mod(t,1)==0);
+  
+  t = t(idx);
+  x = x(idx, :);
+  % Draw 3D Flight Path
+  figure(1);
+  clf;
+  plot3(x(:,4), x(:,5), x(:,6), 'b*')
+  hold on
+  for ii = 1:length(t)  
+    drawStateVector(t(ii), x(ii,:));
+  end
+  axis equal
+  set(gca, 'YDir','reverse')
+  set(gca, 'ZDir','reverse')
+  formatFigure('3D Flight Path','X','Y','Altitude (-Z)')
 
-
-
-t = t(idx);
-x = x(idx, :);
-% Draw 3D Flight Path
-figure(1);
-clf;
-plot3(x(:,4), x(:,5), x(:,6), 'b*')
-hold on
-for ii = 1:length(t)  
-  drawStateVector(t(ii), x(ii,:));
+  figure;
+  plot(t(3:end), diff(diff(x(:,4))), 'b*')
+  
 end
-axis equal
-set(gca, 'YDir','reverse')
-set(gca, 'ZDir','reverse')
-formatFigure('3D Flight Path','X','Y','Altitude (-Z)')

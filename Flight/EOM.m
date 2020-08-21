@@ -10,11 +10,13 @@ global Ixx Iyy Izz mass
 global cBar b S lHT
 rho = 1.225;
 
+R2D = 180 / pi;
+
 HEB = RMQ(qI);
 V = norm(vB);
 alphar = atan(vB(3) / abs(vB(1)));
 
-disp(alphar*180/pi)
+%disp(alphar*180/pi)
 %[CD,CL,CY,Cl,Cm,Cn,Thrust]	=	AeroModel(x,uTotal,alphar,betar,V);
 [CD,CL,CY]	=	AeroModel(x,0,alphar,0,V);
 

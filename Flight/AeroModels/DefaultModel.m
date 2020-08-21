@@ -21,5 +21,5 @@ CLdS      = CLdE;
 CL        =	(CLo + CLa*alphar);
 
 % DRAG
-CDo     =   0.019;
+CDo     = 0.019;
 CD      = CDo;
